@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>訂位查詢系統</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <h1 class="title">餐廳訂位查詢</h1>
+
+    <!-- 查詢區 -->
+    <div class="filter-box">
+        <div class="field">
+            <label>廳位</label>
+            <select id="hallSelect">
+                <option value="全部">全部廳位</option>
+                <option value="晶采廳">晶采廳</option>
+                <option value="花嫁A">花嫁A</option>
+                <option value="花嫁B">花嫁B</option>
+                <option value="花嫁C">花嫁C</option>
+                <option value="晶饌廳">晶饌廳</option>
+                <option value="7樓">7樓</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>日期</label>
+            <input type="date" id="dateInput">
+        </div>
+
+        <button id="searchBtn" class="btn-search">查詢</button>
+    </div>
+
+    <!-- 結果表格 -->
+    <table class="result-table">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>廳位</th>
+                <th>姓名</th>
+                <th>電話</th>
+                <th>桌數</th>
+                <th>總金額</th>
+                <th>訂金</th>
+            </tr>
+        </thead>
+        <tbody id="resultBody">
+            <!-- JS 填入 -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRztD7C-YCwQjpGfjEBPDSutRQVSKCP7qtNZnE2Yuc3UKdGn3LjzN6hwtz-ykJmxYnW5XDd6fT2uCGu/pub?output=csv";
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>

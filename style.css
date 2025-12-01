@@ -1,0 +1,112 @@
+/* 背景 - RO 仙境傳說淡雅風 */
+body {
+    background: linear-gradient(#f7f4ff, #f2faff);
+    font-family: "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* 主容器 */
+.app-container {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffffcc;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px #dcdcf5;
+}
+
+/* 標題 */
+.title {
+    text-align: center;
+    color: #6c5ce7;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+/* 查詢區 */
+.filter-box {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* 下拉式、日期欄位 — 圓潤、可愛、縮短長度 */
+select,
+input[type="date"] {
+    width: 160px;            /* ← 縮短這裡 */
+    padding: 12px;
+    border: 2px solid #dcd6ff;
+    border-radius: 12px;
+    font-size: 15px;
+    background: #ffffffee;
+    transition: 0.2s;
+}
+
+select:focus,
+input:focus {
+    border-color: #a29bfe;
+    box-shadow: 0 0 6px #dcd6ff;
+}
+
+/* 查詢按鈕 */
+.btn-search {
+    padding: 12px 22px;
+    background: #a29bfe;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px #c6c1ff;
+    transition: 0.2s;
+}
+
+.btn-search:hover {
+    background: #7a74e8;
+}
+
+/* 結果表格 */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px #e3e3ff;
+}
+
+/* 表頭 */
+.result-table thead {
+    background: #dcd6ff;
+}
+
+.result-table th {
+    padding: 12px;
+    font-size: 15px;
+    color: #4b4b6e;
+}
+
+/* 表格內容 */
+.result-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0ff;
+    font-size: 15px;
+}
+
+.result-table tr:nth-child(even) {
+    background: #faf9ff;
+}
