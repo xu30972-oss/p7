@@ -9,22 +9,49 @@ async function loadCSV() {
     }
 }
 
+/* ------------------------------
+   安全版 CSV Parser（不會漏資料）
+------------------------------ */
 function parseCSV(text) {
-    const rows = text.split("\n").map(r => r.trim());
-    return rows.slice(1).map(r => {
-        const c = r.split(",");
-        return {
-            日期: c[0],
-            廳位: c[1],
-            客人姓名: c[2],
-            電話: c[3],
-            桌數: c[4],
-            總金額: c[5],
-            訂金: c[6],
-            備註: c[7] ?? ""
-        };
-    });
+    const rows = [];
+    let row = [];
+    let value = "";
+    let insideQuote = false;
+
+    for (let char of text) {
+        if (char === '"') {
+            insideQuote = !insideQuote;
+        } else if (char === ',' && !insideQuote) {
+            row.push(value);
+            value = "";
+        } else if (char === '\n' && !insideQuote) {
+            row.push(value);
+            rows.push(row);
+            row = [];
+            value = "";
+        } else {
+            value += char;
+        }
+    }
+
+    if (value) row.push(value);
+    if (row.length > 1) rows.push(row);
+
+    const header = rows[0];
+
+    return rows.slice(1).map(c => ({
+        日期: c[0] || "",
+        廳位: c[1] || "",
+        客人姓名: c[2] || "",
+        電話: c[3] || "",
+        桌數: c[4] || "",
+        總金額: c[5] || "",
+        訂金: c[6] || "",
+        備註: c[7] || ""
+    }));
 }
+
+/* ------------------------------ */
 
 document.getElementById("searchBtn").addEventListener("click", async () => {
     const hall = document.getElementById("hallSelect").value;
