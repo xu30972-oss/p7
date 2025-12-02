@@ -2,13 +2,15 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>訂位查詢系統</title>
+    <title>訂位查詢 APP</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="app-container">
-    <h1 class="title">餐廳訂位查詢</h1>
+
+    <h1 class="app-title">餐廳訂位查詢</h1>
 
     <!-- 查詢區 -->
     <div class="filter-box">
@@ -33,23 +35,17 @@
         <button id="searchBtn" class="btn-search">查詢</button>
     </div>
 
-    <!-- 結果表格 -->
-    <table class="result-table">
-        <thead>
-            <tr>
-                <th>日期</th>
-                <th>廳位</th>
-                <th>姓名</th>
-                <th>電話</th>
-                <th>桌數</th>
-                <th>總金額</th>
-                <th>訂金</th>
-            </tr>
-        </thead>
-        <tbody id="resultBody">
-            <!-- JS 填入 -->
-        </tbody>
-    </table>
+    <!-- 資料清單（卡片） -->
+    <div id="resultList" class="card-list"></div>
+</div>
+
+<!-- 彈窗：備註 -->
+<div id="modalOverlay" class="modal-overlay">
+    <div class="modal-window">
+        <h2>訂位備註</h2>
+        <div id="noteContent" class="note-box"></div>
+        <button class="modal-close" id="closeModal">關閉</button>
+    </div>
 </div>
 
 <script>

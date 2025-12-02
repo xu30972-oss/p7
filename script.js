@@ -1,94 +1,77 @@
-// ======== 1. 讀取 CSV ======== //
 async function loadCSV() {
     try {
         const res = await fetch(CSV_URL);
-        const data = await res.text();
-        return parseCSV(data);
+        const text = await res.text();
+        return parseCSV(text);
     } catch (e) {
-        alert("資料載入失敗，請檢查 API 或網路");
+        alert("資料載入失敗！");
         return [];
     }
 }
 
-// ======== 2. CSV 解析 ======== //
-function parseCSV(csvText) {
-    const lines = csvText.split("\n").map(l => l.trim());
-    const header = lines[0].split(",");
-
-    return lines.slice(1).map(row => {
-        const cols = row.split(",");
-
+function parseCSV(text) {
+    const rows = text.split("\n").map(r => r.trim());
+    return rows.slice(1).map(r => {
+        const c = r.split(",");
         return {
-            日期: cols[0] || "",
-            廳位: cols[1] || "",
-            客人姓名: cols[2] || "",
-            電話: cols[3] || "",
-            桌數: cols[4] || "",
-            總金額: cols[5] || "",
-            訂金: cols[6] || "",
-            備註: cols[7] || ""   // ★ 新增備註讀取
+            日期: c[0],
+            廳位: c[1],
+            客人姓名: c[2],
+            電話: c[3],
+            桌數: c[4],
+            總金額: c[5],
+            訂金: c[6],
+            備註: c[7] ?? ""
         };
     });
 }
 
-// ======== 3. 點擊查詢 ======== //
 document.getElementById("searchBtn").addEventListener("click", async () => {
     const hall = document.getElementById("hallSelect").value;
     const date = document.getElementById("dateInput").value;
+    const result = document.getElementById("resultList");
 
-    const resultBody = document.getElementById("resultBody");
-    resultBody.innerHTML = "";
+    result.innerHTML = "🔍 載入中...";
 
-    const allData = await loadCSV();
+    const data = await loadCSV();
 
-    const filtered = allData.filter(item => {
-        const matchDate = item.日期 === date;
-        const matchHall = (hall === "全部" ? true : item.廳位 === hall);
-        return matchDate && matchHall;
-    });
+    const filtered = data.filter(item =>
+        item.日期 === date &&
+        (hall === "全部" || item.廳位 === hall)
+    );
+
+    if (!filtered.length) {
+        result.innerHTML = "<div>❗ 沒有找到資料</div>";
+        return;
+    }
+
+    result.innerHTML = "";
 
     filtered.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.classList.add("clickable-row"); // ★ 點擊效果
-        tr.innerHTML = `
-            <td>${item.日期}</td>
-            <td>${item.廳位}</td>
-            <td>${item.客人姓名}</td>
-            <td>${item.電話}</td>
-            <td>${item.桌數}</td>
-            <td>${item.總金額}</td>
-            <td>${item.訂金}</td>
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <h3>${item.客人姓名}（${item.廳位}）</h3>
+            <p>📅 日期：${item.日期}</p>
+            <p>📞 電話：${item.電話}</p>
+            <p>🍽️ 桌數：${item.桌數}</p>
+            <p>💰 總金額：${item.總金額}</p>
+            <p>💵 訂金：${item.訂金}</p>
         `;
 
-        // ★★★ 點擊顯示備註彈窗 ★★★
-        tr.addEventListener("click", () => {
-            showNoteModal(item);
+        /* 點擊卡片 → 顯示備註 */
+        card.addEventListener("click", () => {
+            document.getElementById("noteContent").textContent =
+                item.備註.trim() ? item.備註 : "（沒有備註）";
+
+            document.getElementById("modalOverlay").style.display = "flex";
         });
 
-        resultBody.appendChild(tr);
+        result.appendChild(card);
     });
 });
 
-// ======== 4. 建立彈窗 ======== //
-function showNoteModal(item) {
-    const modal = document.createElement("div");
-    modal.className = "modal-overlay";
-
-    modal.innerHTML = `
-        <div class="modal-window">
-            <h2>訂位備註</h2>
-            <p><strong>客人：</strong> ${item.客人姓名}</p>
-            <p><strong>電話：</strong> ${item.電話}</p>
-            <p><strong>備註內容：</strong></p>
-            <div class="note-box">${item.備註 || "（無備註）"}</div>
-
-            <button class="modal-close">關閉</button>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    modal.querySelector(".modal-close").addEventListener("click", () => {
-        modal.remove();
-    });
-}
+/* 關閉彈窗 */
+document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("modalOverlay").style.display = "none";
+});
